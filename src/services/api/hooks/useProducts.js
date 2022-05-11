@@ -11,8 +11,8 @@ const useProducts = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(endPoints.products.getProducts(PRODUCTS_LIMIT, offset));
-      setProducts(response)
-    }
+      setProducts(response.data)
+        }
     try {
       fetchData();
     } catch (error) {
