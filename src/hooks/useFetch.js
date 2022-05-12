@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import endPoints from '..';
+import endPoints from '../pages';
 
 const useFetch = (endpoint) => {
   const [data, setData] = useState([]);

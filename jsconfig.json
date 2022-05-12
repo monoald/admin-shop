@@ -3,7 +3,7 @@
     "baseUrl": "src",
     "paths": {
       "@styles/*": ["styles/*"],
-      "@hooks/*": ["services/api/hooks/*"],
+      "@hooks/*": ["hooks/*"],
     }
   }
 }

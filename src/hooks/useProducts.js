@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import endPoints from '..';
+import endPoints from 'services/api';
 
 const useProducts = () => {
   const [offset, setOffset] = useState(0);
