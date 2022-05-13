@@ -32,16 +32,21 @@ function useProviderAuth() {
       Cookie.set('token', access_token, { expires: 5 });
 
       axios.defaults.headers.Authorization = `Bearer ${access_token}`;
-      const {
-        data: user ,
-      } = await axios.get(endPoints.auth.profile);
-      console.log(user);
+      const { data: user } = await axios.get(endPoints.auth.profile);
       setUser(user);
     }
+  };
+
+  const logout = () => {
+    Cookie.remove('token');
+    setUser(null);
+    delete axios.defaults.headers.Authorization;
+    window.location.href = '/login';
   };
 
   return {
     user,
     signIn,
+    logout,
   };
 }

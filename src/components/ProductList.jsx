@@ -1,6 +1,9 @@
-const ProductList = ({ product }) => {
+import Link from 'next/link';
+import { XCircleIcon } from '@heroicons/react/solid';
+
+const ProductList = ({ product, handleDelete }) => {
   return (
-    <tr >
+    <tr>
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex items-center">
           <div className="flex-shrink-0 h-10 w-10">
@@ -19,14 +22,14 @@ const ProductList = ({ product }) => {
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-          Edit
-        </a>
+        <Link href={`/dashboard/edit/${product.id}`} >
+          <a className="text-indigo-600 hover:text-indigo-900">
+            Edit
+          </a>
+        </Link>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-          Delete
-        </a>
+        <XCircleIcon className="flex-shrink-0 h-6 w-6 text-gray-400 cursor-pointer" aria-hidden="true" onClick={() => handleDelete(product.id)} />
       </td>
     </tr>
   );

@@ -1,18 +1,53 @@
 import { useState, useEffect } from "react";
 import ProductList from "components/ProductList";
-import Pagination from "components/Pagination"
-import Modal from "common/Modal";
-import useProducts from '@hooks/useProducts';
-import { PlusIcon } from "@heroicons/react/solid";
 import FormProduct from "components/FormProduct";
+import Modal from "common/Modal";
+import Alert from "common/Alert";
+import useAlert from "@hooks/useAlert";
+import endPoints from "services/api";
+import { deleteProduct } from 'services/api/products';
+import axios from "axios";
+import { PlusIcon, XCircleIcon } from "@heroicons/react/solid";
 
-export default function products() {
-  const [open, setOpen] = useState(false)
-  const products = useProducts();
+export default function Products() {
+  const [products, setProducts] = useState([]);
+  const [open, setOpen] = useState(false);
+  const {alert, setAlert, toggleAlert } = useAlert();
 
+  useEffect(() => {
+    async function getProducts() {
+      const response = await axios.get(endPoints.products.getAllProducts);
+      setProducts(response.data);
+    }
+    try {
+      getProducts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [alert]);
 
+  const handleDelete = (id) => {
+    deleteProduct(id).then(() => {
+      setAlert({
+        active: true,
+        message: 'Delete product successfully',
+        type: 'error',
+        autoClose: false,
+      });
+    })
+    .catch((error) => {
+      setAlert({
+          active: true,
+          message: error.message,
+          type: "error",
+          autoClose: false,
+      });
+  });
+  };
+  
   return (
     <>
+      <Alert alert={alert} handleClose={toggleAlert} />
       <div className="lg:flex lg:items-center lg:justify-between mb-8">
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">List of Products</h2>
@@ -59,23 +94,17 @@ export default function products() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {products?.products?.map((product) => (
-                    <ProductList product={product} key={`Product-item-${product.id}`} />
+                  {products?.map((product) => (
+                    <ProductList product={product} key={`Product-item-${product.id}`} handleDelete={handleDelete} />
                   ))}
                 </tbody>
               </table>
-              <Pagination 
-                page={products.page} 
-                setOffset={products.setOffset} 
-                setPage={products.setPage} 
-                PRODUCTS_LIMIT={products.PRODUCTS_LIMIT} 
-              />
             </div>
           </div>
         </div>
       </div>
       <Modal open={open} setOpen={setOpen}>
-        <FormProduct />
+        <FormProduct setOpen={setOpen} setAlert={setAlert} />
       </Modal>
     </>
   )

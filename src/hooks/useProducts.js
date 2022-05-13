@@ -7,12 +7,12 @@ const useProducts = () => {
   const [page, setPage] = useState(0);
   const PRODUCTS_LIMIT = 5;
   const [products, setProducts] = useState(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(endPoints.products.getProducts(PRODUCTS_LIMIT, offset));
-      setProducts(response.data)
-        }
+      setProducts(response.data);
+    };
     try {
       fetchData();
     } catch (error) {
@@ -21,12 +21,12 @@ const useProducts = () => {
   }, [offset, PRODUCTS_LIMIT]);
 
   return {
-    page, 
+    page,
     products,
     setOffset,
     setPage,
     PRODUCTS_LIMIT,
   };
-}
+};
 
 export default useProducts;
