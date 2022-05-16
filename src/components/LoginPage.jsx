@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Link from 'next/link';
 import { LockClosedIcon } from '@heroicons/react/solid';
 import { useAuth } from '@hooks/useAuth';
 import { useState } from 'react';
@@ -42,7 +44,7 @@ export default function LoginPage() {
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
+            <Image className="mx-auto h-12 w-auto" alt="Workflow" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" width="40px" height="40px" layout="fixed" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
           </div>
           <form className="mt-8 space-y-6" onSubmit={submitHandler}>
@@ -89,9 +91,9 @@ export default function LoginPage() {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </a>
+                <Link href="/">
+                  <span className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</span>
+                </Link>
               </div>
             </div>
             {errorLogin && (
@@ -102,8 +104,8 @@ export default function LoginPage() {
 
             {loading && (
               <span className="flex absolute h-4 w-4 top-0 right-0 -mt-1 -mr-1">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-300 opacity-75" />
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-indigo-400" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-300 opacity-75" />
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-indigo-400" />
               </span>
             )}
 

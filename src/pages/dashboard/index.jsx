@@ -10,21 +10,25 @@ export default function Dashboard() {
   const categoryNames = productsData?.map((product) => product.category);
   const categoryCount = categoryNames?.map((category) => category.name);
 
-  const countOccurrences = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev),
-  {});
+  const countOccurrences = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
 
   return (
     <>
-      { categoryCount !== undefined && 
-        <Chart className="mb-8 mt-2" chartData={{
-          datasets: [{
-            label: 'Categories',
-            data: countOccurrences(categoryCount),
-            borderWidth: 2,
-            backgroundColor: ['#ffbb11', '#c0c0c0', '#50af95', '#f3ba2f', '#2a71d0']
-          }]}} 
-        /> 
-      }
+      {categoryCount !== undefined && (
+        <Chart
+          className="mb-8 mt-2"
+          chartData={{
+            datasets: [
+              {
+                label: 'Categories',
+                data: countOccurrences(categoryCount),
+                borderWidth: 2,
+                backgroundColor: ['#ffbb11', '#c0c0c0', '#50af95', '#f3ba2f', '#2a71d0'],
+              },
+            ],
+          }}
+        />
+      )}
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -54,16 +58,11 @@ export default function Dashboard() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {products?.products?.map((product) => (
-                    <ProductList product={product} key={`Product-item-${product.id}`} />
+                    <ProductList product={product} key={`Product-item-${product.id}`} page="dashboard" />
                   ))}
                 </tbody>
               </table>
-              <Pagination 
-                page={products.page} 
-                setOffset={products.setOffset} 
-                setPage={products.setPage} 
-                PRODUCTS_LIMIT={products.PRODUCTS_LIMIT} 
-              />
+              <Pagination page={products.page} setOffset={products.setOffset} setPage={products.setPage} PRODUCTS_LIMIT={products.PRODUCTS_LIMIT} />
             </div>
           </div>
         </div>

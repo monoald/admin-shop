@@ -1,5 +1,5 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@hooks/useAuth';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
@@ -19,7 +19,7 @@ function classNames(...classes) {
 
 export default function Header() {
   const auth = useAuth();
-  
+
   const userData = {
     name: auth?.user?.name,
     email: auth?.user?.email,
@@ -35,7 +35,7 @@ export default function Header() {
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img className="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
+                    <Image className="h-8 w-8" alt="Workflow" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" width="40px" height="40px" layout="fixed" />
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
@@ -67,7 +67,7 @@ export default function Header() {
                       <div>
                         <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                           <span className="sr-only">Open user menu</span>
-                          <img className="h-8 w-8 rounded-full" src={userData.imageUrl} alt="" />
+                          {userData.imageUrl && <Image className="h-8 w-8 rounded-full" alt="" src={userData.imageUrl} width="38px" height="38px" layout="fixed" />}
                         </Menu.Button>
                       </div>
                       <Transition
@@ -80,15 +80,6 @@ export default function Header() {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          {/* {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <a href={item.href} className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>
-                                  {item.name}
-                                </a>
-                              )}
-                            </Menu.Item>
-                          ))} */}
                           <button onClick={() => auth.logout()} className="bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700">
                             Logout
                           </button>
@@ -123,9 +114,7 @@ export default function Header() {
               </div>
               <div className="pt-4 pb-3 border-t border-gray-700">
                 <div className="flex items-center px-5">
-                  <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={userData.imageUrl} alt="" />
-                  </div>
+                  <div className="flex-shrink-0">{userData.imageUrl && <Image className="h-10 w-10 rounded-full" alt="" src={userData.imageUrl} width="40px" height="40px" layout="fixed" />}</div>
                   <div className="ml-3">
                     <div className="text-base font-medium leading-none text-white">{userData.name}</div>
                     <div className="text-sm font-medium leading-none text-gray-400">{userData.email}</div>

@@ -2,34 +2,27 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { addProduct, updateProduct } from 'services/api/products';
 
-export default function FormProduct({ setOpen, setAlert, product }) {
+export default function FormProduct({ setOpen, setAlert, product, formType }) {
   const formRef = useRef(null);
   const router = useRouter();
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
-    console.log(formData.get('category'))
     const data = {
       title: formData.get('title'),
       price: parseInt(formData.get('price')),
       description: formData.get('description'),
-      category: {
-        id: 8,
-        image: "https://api.lorem.space/image/furniture?w=640&h=480&r=5640",
-        name: formData.get('category'),
-      },
+      categoryId: parseInt(formData.get('category')),
       images: [formData.get('images').name],
     };
 
     if (product) {
-      updateProduct(product.id, data)
-        .then(response => {
-          console.log(data);
-          console.log(response);
-          router.push('/dashboard/products/');
-        })
+      updateProduct(product.id, data).then(() => {
+        router.push('/dashboard/products/');
+      });
     } else {
+      console.log(data);
       addProduct(data)
         .then(() => {
           setAlert({
@@ -40,13 +33,14 @@ export default function FormProduct({ setOpen, setAlert, product }) {
           });
           setOpen(false);
         })
-        .catch (error => {
+        .catch((error) => {
           setAlert({
             active: true,
             message: error.message,
             type: 'error',
             autoClose: false,
           });
+          setOpen(false);
         });
     }
   };
@@ -60,34 +54,47 @@ export default function FormProduct({ setOpen, setAlert, product }) {
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title
               </label>
-              <input defaultValue={product?.title} required type="text" name="title" id="title" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              <input
+                defaultValue={product?.title}
+                required
+                type="text"
+                name="title"
+                id="title"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
             </div>
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="price" className="block text-sm font-medium text-gray-700">
                 Price
               </label>
-              <input defaultValue={product?.price} required type="number" name="price" id="price" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              <input
+                defaultValue={product?.price}
+                required
+                type="number"
+                name="price"
+                id="price"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
             </div>
             <div className="col-span-6">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                 Category
               </label>
-              {product?.category?.name &&
+              {(product?.category?.name || formType == 'newProduct') && (
                 <select
-                  defaultValue={product?.category?.name}
+                  defaultValue={product?.category?.id}
                   id="category"
                   name="category"
                   autoComplete="category-name"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
-                  <option value="Clothes">Clothes</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Furniture">Furniture</option>
-                  <option value="Toys">Toys</option>
-                  <option value="Shoes">Shoes</option>
-                  <option value="Others">Others</option>
+                  <option value={1}>Clothes</option>
+                  <option value={2}>Electronics</option>
+                  <option value={3}>Furniture</option>
+                  <option value={4}>Shoes</option>
+                  <option value={5}>Others</option>
                 </select>
-              }
+              )}
             </div>
 
             <div className="col-span-6">
@@ -106,7 +113,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
             </div>
             <div className="col-span-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Cover photo</label>
+                <span className="block text-sm font-medium text-gray-700">Cover photo</span>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
                     <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">

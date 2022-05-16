@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
-import ProductList from "components/ProductList";
-import FormProduct from "components/FormProduct";
-import Modal from "common/Modal";
-import Alert from "common/Alert";
-import useAlert from "@hooks/useAlert";
-import endPoints from "services/api";
+import { useState, useEffect } from 'react';
+import ProductList from 'components/ProductList';
+import FormProduct from 'components/FormProduct';
+import Modal from 'common/Modal';
+import Alert from 'common/Alert';
+import useAlert from '@hooks/useAlert';
+import endPoints from 'services/api';
 import { deleteProduct } from 'services/api/products';
-import axios from "axios";
-import { PlusIcon, XCircleIcon } from "@heroicons/react/solid";
+import axios from 'axios';
+import { PlusIcon } from '@heroicons/react/solid';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
-  const {alert, setAlert, toggleAlert } = useAlert();
+  const { alert, setAlert, toggleAlert } = useAlert();
+  const editDelete = true;
 
   useEffect(() => {
     async function getProducts() {
@@ -27,24 +28,25 @@ export default function Products() {
   }, [alert]);
 
   const handleDelete = (id) => {
-    deleteProduct(id).then(() => {
-      setAlert({
-        active: true,
-        message: 'Delete product successfully',
-        type: 'error',
-        autoClose: false,
-      });
-    })
-    .catch((error) => {
-      setAlert({
+    deleteProduct(id)
+      .then(() => {
+        setAlert({
+          active: true,
+          message: 'Delete product successfully',
+          type: 'error',
+          autoClose: false,
+        });
+      })
+      .catch((error) => {
+        setAlert({
           active: true,
           message: error.message,
-          type: "error",
+          type: 'error',
           autoClose: false,
+        });
       });
-  });
   };
-  
+
   return (
     <>
       <Alert alert={alert} handleClose={toggleAlert} />
@@ -95,7 +97,7 @@ export default function Products() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {products?.map((product) => (
-                    <ProductList product={product} key={`Product-item-${product.id}`} handleDelete={handleDelete} />
+                    <ProductList product={product} key={`Product-item-${product.id}`} handleDelete={handleDelete} editDelete={editDelete} />
                   ))}
                 </tbody>
               </table>
@@ -104,8 +106,8 @@ export default function Products() {
         </div>
       </div>
       <Modal open={open} setOpen={setOpen}>
-        <FormProduct setOpen={setOpen} setAlert={setAlert} />
+        <FormProduct setOpen={setOpen} setAlert={setAlert} formType={'newProduct'} />
       </Modal>
     </>
-  )
+  );
 }
