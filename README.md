@@ -16,7 +16,7 @@
 		<img src="https://img.shields.io/badge/API-Escuela%20JS-98ca3f?style=flat" />
 	</a>
 </p>
-<p>You can see the project deployed <a href="https://admin-shop-k25o8jkvb-monoald.vercel.app/">here<a/><p/>
+<p>Admin section for the <a href="https://github.com/monoald/next-react-shop">Next-React-Shop</a> project. You can see the project deployed <a href="https://admin-shop-k25o8jkvb-monoald.vercel.app/">here<a/><p/>
 
 
 ## Dependencies
